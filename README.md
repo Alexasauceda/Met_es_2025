@@ -12,4 +12,4 @@ Repositorio del curso de metodos estadisticos agosto 2025 del programa de ingeni
  07/08/2025: sincronizar github con mi pojecto 
  + crear version control 
  + bases para un uso eficiente en R 
- + mordificacion en readme
+ + mordificacion en readm 
