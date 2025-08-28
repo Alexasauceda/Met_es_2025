@@ -24,6 +24,7 @@ boxplot(calidad$IE ~ calidad$Tratamiento,
 
 tapply(calidad$IE, calidad$Tratamiento, mean)
 tapply(calidad$IE, calidad$Tratamiento, var)
+tapply(calidad$IE, calidad$Tratamiento, sd)
 
 #observamos que la varianza del grupo fert es tres veces 
 #mas grande que el grupo control (ctrl)
@@ -34,6 +35,41 @@ library("ggplot2")
 ggplot(calidad, aes(x = IE, color = Tratamiento))+
   geom_density()
 
+#separar los datos por tratamiento
+
+df_ctrl <-subset(calidad, Tratamiento =="Ctrl")
+df_fert <-subset(calidad, Tratamiento !="Ctrl")
+
+# qqnorm revisar normalidad 
+par(mfrow = c(1, 2))
+qqnorm(df_ctrl$IE);qqline(df_ctrl$IE)
+qqnorm(df_fert$IE);qqline(df_fert$IE)
+par(mfrow = c(1, 1))
 
 
+# prueba de normalidad
 
+shapiro.test(df_ctrl$IE)
+shapiro.test(df_fert$IE)
+
+
+#revisar homogeneidad de varianza 
+var.test(df_ctrl$IE, df_fert$IE)
+var.test(calidad$IE ~ calidad$Tratamiento)
+
+# aplicar la prueba t, varianzas iguales 
+#dos colas = two.sided
+
+t.test(calidad$IE ~ calidad$Tratamiento,
+       var.equal = T,
+       alternative = "two.sided")
+
+cohens_efecto <- function(x, y) {
+  n1 <- length(x); n2 <- length(y)
+  s1 <-sd(x); s2 <- sd(y)
+  sp <- sqrt(((n1 - 1) *s1^2 + (n2 - 1)* s2^2)/(n1 + n2 - 2))
+  (mean(x)- mean(y)) / sp
+  }
+
+d_cal <- cohens_efecto(df_ctrl$IE, df_fert$IE)
+d_cal
