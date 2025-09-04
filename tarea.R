@@ -33,6 +33,6 @@ d_cal
 boxplot(Petal.Length ~ Species,data=data_sub,
         main="Comparacion de largo de petalo",
         XLAB="Especie",
-        ylab="Peter.Length(cm)",
+        ylab="Petal.Length(cm)",
         col=c("lightblue","lightgreen"))
 
